@@ -12,8 +12,8 @@ const (
 )
 
 type Cell struct {
-	row int
-	col int
+	Row int
+	Col int
 	Val int
 }
 
@@ -52,6 +52,34 @@ func (deck *Deck) SetCell(row, col, val int) error {
 	cell.Val = val
 	deck.Data[row][col] = cell
 	return nil
+}
+
+func (deck *Deck) NonEmptyCells() []Cell {
+	result := make([]Cell, 0)
+
+	for _, row := range deck.Data {
+		for _, cell := range row {
+			if cell.Val != EMPTY {
+				result = append(result, cell)
+			}
+		}
+	}
+
+	return result
+}
+
+func (deck *Deck) EmptyCells() []Cell {
+	result := make([]Cell, 0)
+
+	for _, row := range deck.Data {
+		for _, cell := range row {
+			if cell.Val == EMPTY {
+				result = append(result, cell)
+			}
+		}
+	}
+
+	return result
 }
 
 func (deck Deck) String() string {
