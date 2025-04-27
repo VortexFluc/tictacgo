@@ -40,14 +40,14 @@ func NewDeck(size int) Deck {
 	}
 }
 
-func (deck *Deck) SetCell(row, col, val int) error {
-	cell := deck.Data[row][col]
+func (d *Deck) SetCell(row, col, val int) error {
+	cell := d.Data[row][col]
 
-	if row > deck.size-1 {
+	if row > d.size-1 {
 		return errors.New("Row out of range")
 	}
 
-	if col > deck.size-1 {
+	if col > d.size-1 {
 		return errors.New("Col out of range")
 	}
 
@@ -56,14 +56,14 @@ func (deck *Deck) SetCell(row, col, val int) error {
 	}
 
 	cell.Val = val
-	deck.Data[row][col] = cell
+	d.Data[row][col] = cell
 	return nil
 }
 
-func (deck *Deck) CellsFilledWith(mark int) []Cell {
+func (d *Deck) CellsFilledWith(mark int) []Cell {
 	result := make([]Cell, 0)
 
-	for _, row := range deck.Data {
+	for _, row := range d.Data {
 		for _, cell := range row {
 			if cell.Val == mark {
 				result = append(result, cell)
@@ -74,10 +74,10 @@ func (deck *Deck) CellsFilledWith(mark int) []Cell {
 	return result
 }
 
-func (deck *Deck) EmptyCells() []Cell {
+func (d *Deck) EmptyCells() []Cell {
 	result := make([]Cell, 0)
 
-	for _, row := range deck.Data {
+	for _, row := range d.Data {
 		for _, cell := range row {
 			if cell.Val == EMPTY {
 				result = append(result, cell)
@@ -88,9 +88,27 @@ func (deck *Deck) EmptyCells() []Cell {
 	return result
 }
 
-func (deck Deck) String() string {
+func (d *Deck) Diagonals() [][]Cell {
+	result := make([][]Cell, 0)
+	firstDiagonal := make([]Cell, 0)
+	for i := 0; i < d.size; i++ {
+		firstDiagonal = append(firstDiagonal, d.Data[i][i])
+	}
+
+	result = append(result, firstDiagonal)
+
+	secondDiagonal := make([]Cell, 0)
+	for i := 0; i < d.size; i++ {
+		secondDiagonal = append(secondDiagonal, d.Data[d.size-i-1][i])
+	}
+	result = append(result, secondDiagonal)
+
+	return result
+}
+
+func (d Deck) String() string {
 	result := ""
-	for _, row := range deck.Data {
+	for _, row := range d.Data {
 		for _, cell := range row {
 			switch cell.Val {
 			case X:
