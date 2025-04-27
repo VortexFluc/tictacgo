@@ -38,6 +38,14 @@ func (p *RealPlayer) Choice(d *deck.Deck) {
 	}
 }
 
+func (p *RealPlayer) GetMark() int {
+	return p.mark
+}
+
+func (p *RealPlayer) String() string {
+	return fmt.Sprint("You")
+}
+
 func (p *RealPlayer) setValue(ir *bufio.Reader, d *deck.Deck) error {
 	fmt.Println("Select a row (from 1 to 3)")
 	rStr := readInput(ir)

@@ -9,6 +9,7 @@ import (
 
 type Player interface {
 	Choice(d *deck.Deck)
+	GetMark() int
 }
 
 func PreparePlayers() []Player {

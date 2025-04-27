@@ -28,6 +28,12 @@ func NewDeck(size int) Deck {
 		data[i] = make([]Cell, size)
 	}
 
+	for rowIdx, row := range data {
+		for colIdx, _ := range row {
+			data[rowIdx][colIdx] = Cell{Row: rowIdx, Col: colIdx, Val: EMPTY}
+		}
+	}
+
 	return Deck{
 		Data: data,
 		size: size,
@@ -54,12 +60,12 @@ func (deck *Deck) SetCell(row, col, val int) error {
 	return nil
 }
 
-func (deck *Deck) NonEmptyCells() []Cell {
+func (deck *Deck) CellsFilledWith(mark int) []Cell {
 	result := make([]Cell, 0)
 
 	for _, row := range deck.Data {
 		for _, cell := range row {
-			if cell.Val != EMPTY {
+			if cell.Val == mark {
 				result = append(result, cell)
 			}
 		}
