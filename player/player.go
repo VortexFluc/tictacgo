@@ -12,15 +12,16 @@ type Player interface {
 	GetMark() int
 }
 
-func PreparePlayers() []Player {
+func PreparePlayers() ([]Player, chan bool) {
 	players := make([]Player, 0)
 
 	inputReader := bufio.NewReader(os.Stdin)
-	players = append(players, NewPlayablePlayer(inputReader))
+	exitCh := make(chan bool)
+	players = append(players, NewPlayablePlayer(inputReader, exitCh))
 
 	players = append(players, NewNPC())
 
-	return players
+	return players, exitCh
 }
 
 func ChangePlayer(curPlayer Player, players []Player) (Player, error) {

@@ -9,14 +9,16 @@ import (
 )
 
 type RealPlayer struct {
-	mark  int
-	input *bufio.Reader
+	mark   int
+	input  *bufio.Reader
+	exitCh chan bool
 }
 
-func NewPlayablePlayer(input *bufio.Reader) *RealPlayer {
+func NewPlayablePlayer(input *bufio.Reader, exitCh chan bool) *RealPlayer {
 	return &RealPlayer{
-		mark:  deck.X,
-		input: input,
+		mark:   deck.X,
+		input:  input,
+		exitCh: exitCh,
 	}
 }
 
@@ -31,8 +33,7 @@ func (p *RealPlayer) Choice(d *deck.Deck) {
 			fmt.Println("Error setting value: ", err)
 		}
 	case QUIT:
-		fmt.Println("Bye!")
-		// todo: consider using channel to signal game, that it must be closed.
+		p.exitCh <- true
 	default:
 		fmt.Println("Invalid command")
 	}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"tictactoe/deck"
 	"tictactoe/player"
 )
@@ -15,9 +16,18 @@ func main() {
 	fmt.Println(d)
 
 	fmt.Println("Initializing players.")
-	players := player.PreparePlayers()
+	players, exitCh := player.PreparePlayers()
 
 	curPlayer := players[0]
+
+	go func() {
+		exit := <-exitCh
+
+		if exit {
+			fmt.Println("Thanks for playing!")
+			os.Exit(0)
+		}
+	}()
 
 	for {
 		curPlayer.Choice(&d)
