@@ -55,7 +55,11 @@ func (p *RealPlayer) setValue(ir *bufio.Reader, d *deck.Deck) error {
 		cStr := readInput(ir)
 		if column, err := strconv.Atoi(cStr); err == nil {
 			return d.SetCell(row-1, column-1, p.mark)
+		} else {
+			return err
 		}
+	} else {
+		return err
 	}
 
 	return nil
