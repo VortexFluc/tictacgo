@@ -1,6 +1,9 @@
 package deck
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 const (
 	EMPTY = iota
@@ -11,11 +14,12 @@ const (
 type Cell struct {
 	row int
 	col int
-	val int
+	Val int
 }
 
 type Deck struct {
-	data [][]Cell
+	Data [][]Cell
+	size int
 }
 
 func NewDeck(size int) Deck {
@@ -25,15 +29,36 @@ func NewDeck(size int) Deck {
 	}
 
 	return Deck{
-		data: data,
+		Data: data,
+		size: size,
 	}
+}
+
+func (deck *Deck) SetCell(row, col, val int) error {
+	cell := deck.Data[row][col]
+
+	if row > deck.size-1 {
+		return errors.New("Row out of range")
+	}
+
+	if col > deck.size-1 {
+		return errors.New("Col out of range")
+	}
+
+	if cell.Val != EMPTY {
+		return errors.New("Cell not empty")
+	}
+
+	cell.Val = val
+	deck.Data[row][col] = cell
+	return nil
 }
 
 func (deck Deck) String() string {
 	result := ""
-	for _, row := range deck.data {
+	for _, row := range deck.Data {
 		for _, cell := range row {
-			switch cell.val {
+			switch cell.Val {
 			case X:
 				result += fmt.Sprint("X")
 			case O:

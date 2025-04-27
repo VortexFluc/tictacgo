@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"tictactoe/deck"
 )
 
 const (
@@ -27,10 +28,10 @@ func main() {
 	fmt.Println("Hello! Welcome to test tictactoe game!")
 	fmt.Println("Preparing deck for you...")
 
-	deck := NewDeck()
+	d := deck.NewDeck(3)
 
 	fmt.Println("Deck initialized. Here's the deck:")
-	PrintDeck(deck)
+	fmt.Println(d)
 
 	for {
 		fmt.Println("Please enter a command. Available commands: set, quit")
@@ -39,7 +40,7 @@ func main() {
 
 		switch command {
 		case SET:
-			SetValue(inputReader, &deck)
+			SetValue(inputReader, &d)
 		case QUIT:
 			break
 		default:
@@ -47,17 +48,18 @@ func main() {
 			continue
 		}
 
-		PrintDeck(deck)
-		isXWin := processStage(&deck, X)
+		fmt.Println(d)
+		adaptData := adapt(d.Data)
+		isXWin := processStage(&adaptData, X)
 		if isXWin {
 			fmt.Println("You won!")
 			break
 		}
 
 		fmt.Println("Player 2 is making a choice...")
-		performAIStep(&deck)
-		PrintDeck(deck)
-		isOWin := processStage(&deck, O)
+		performAIStep(&adaptData)
+		fmt.Println(d)
+		isOWin := processStage(&adaptData, O)
 		if isOWin {
 			fmt.Println("Player 2 won!")
 			break
@@ -132,6 +134,16 @@ func processStage(deck *[3][3]int, mark int) bool {
 	return win
 }
 
+func adapt(d [][]deck.Cell) [3][3]int {
+	data := [3][3]int{}
+	for i, row := range d {
+		for j, cell := range row {
+			data[i][j] = cell.Val
+		}
+	}
+
+	return data
+}
 func scanDeck(deck *[3][3]int, mark int) []DeckCell {
 	result := make([]DeckCell, 0)
 	for rowIdx, row := range deck {
@@ -160,21 +172,16 @@ func GetCommand(com string) int {
 	return UNKNOWN
 }
 
-func SetValue(ir *bufio.Reader, deck *[3][3]int) {
+func SetValue(ir *bufio.Reader, d *deck.Deck) {
 	fmt.Println("Select a row (from 1 to 3)")
 	rStr := readInput(ir)
 	if row, err := strconv.Atoi(rStr); err == nil {
 		fmt.Println("Select a column (from 1 to 3)")
 		cStr := readInput(ir)
 		if column, err := strconv.Atoi(cStr); err == nil {
-			deck[row-1][column-1] = X
+			d.SetCell(row-1, column-1, X)
 		}
 	}
-}
-
-func NewDeck() [3][3]int {
-	newDeck := [3][3]int{}
-	return newDeck
 }
 
 func readInput(ir *bufio.Reader) string {
@@ -182,21 +189,4 @@ func readInput(ir *bufio.Reader) string {
 	command = strings.TrimSpace(command)
 
 	return command
-}
-
-func PrintDeck(deck [3][3]int) {
-	for _, row := range deck {
-		for _, cell := range row {
-			switch cell {
-			case X:
-				fmt.Print("X")
-			case O:
-				fmt.Print("O")
-			case EMPTY:
-				fmt.Print("▢")
-			}
-			fmt.Print(" ")
-		}
-		fmt.Println()
-	}
 }
