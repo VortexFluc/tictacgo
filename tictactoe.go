@@ -30,6 +30,11 @@ func main() {
 			break
 		}
 
+		if result == deck.DRAW {
+			fmt.Println("Draw!")
+			break
+		}
+
 		if newPlayer, err := player.ChangePlayer(curPlayer, players); err != nil {
 			fmt.Println(err)
 			break
