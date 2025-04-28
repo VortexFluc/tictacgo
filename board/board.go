@@ -1,4 +1,4 @@
-package deck
+package board
 
 import (
 	"errors"
@@ -17,12 +17,12 @@ type Cell struct {
 	Val int
 }
 
-type Deck struct {
+type Board struct {
 	Data [][]Cell
 	size int
 }
 
-func NewDeck(size int) Deck {
+func NewBoard(size int) Board {
 	data := make([][]Cell, size)
 	for i := range data {
 		data[i] = make([]Cell, size)
@@ -34,13 +34,13 @@ func NewDeck(size int) Deck {
 		}
 	}
 
-	return Deck{
+	return Board{
 		Data: data,
 		size: size,
 	}
 }
 
-func (d *Deck) SetCell(row, col, val int) error {
+func (d *Board) SetCell(row, col, val int) error {
 	cell := d.Data[row][col]
 
 	if row > d.size-1 {
@@ -60,7 +60,7 @@ func (d *Deck) SetCell(row, col, val int) error {
 	return nil
 }
 
-func (d *Deck) CellsFilledWith(mark int) []Cell {
+func (d *Board) CellsFilledWith(mark int) []Cell {
 	result := make([]Cell, 0)
 
 	for _, row := range d.Data {
@@ -74,7 +74,7 @@ func (d *Deck) CellsFilledWith(mark int) []Cell {
 	return result
 }
 
-func (d *Deck) EmptyCells() []Cell {
+func (d *Board) EmptyCells() []Cell {
 	result := make([]Cell, 0)
 
 	for _, row := range d.Data {
@@ -88,7 +88,7 @@ func (d *Deck) EmptyCells() []Cell {
 	return result
 }
 
-func (d *Deck) Diagonals() [][]Cell {
+func (d *Board) Diagonals() [][]Cell {
 	result := make([][]Cell, 0)
 	firstDiagonal := make([]Cell, 0)
 	for i := 0; i < d.size; i++ {
@@ -106,7 +106,7 @@ func (d *Deck) Diagonals() [][]Cell {
 	return result
 }
 
-func (d Deck) String() string {
+func (d Board) String() string {
 	result := ""
 	for _, row := range d.Data {
 		for _, cell := range row {

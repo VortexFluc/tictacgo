@@ -3,7 +3,7 @@ package player
 import (
 	"fmt"
 	"math/rand"
-	"tictactoe/deck"
+	"tictactoe/board"
 )
 
 type NPC struct {
@@ -12,11 +12,11 @@ type NPC struct {
 
 func NewNPC() *NPC {
 	return &NPC{
-		mark: deck.O,
+		mark: board.O,
 	}
 }
 
-func (p *NPC) Choice(d *deck.Deck) {
+func (p *NPC) Choice(d *board.Board) {
 	fmt.Println("NPC choice:")
 	emptyCells := d.EmptyCells()
 

@@ -4,11 +4,11 @@ import (
 	"bufio"
 	"errors"
 	"os"
-	"tictactoe/deck"
+	"tictactoe/board"
 )
 
 type Player interface {
-	Choice(d *deck.Deck)
+	Choice(d *board.Board)
 	GetMark() int
 }
 

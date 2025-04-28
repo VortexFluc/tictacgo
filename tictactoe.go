@@ -3,16 +3,16 @@ package main
 import (
 	"fmt"
 	"os"
-	"tictactoe/deck"
+	"tictactoe/board"
 	"tictactoe/player"
 )
 
 func main() {
 	fmt.Println("Hello! Welcome to test TicTacToe game!")
-	fmt.Println("Preparing deck for you...")
-	d := deck.NewDeck(3)
+	fmt.Println("Preparing board for you...")
+	d := board.NewBoard(3)
 
-	fmt.Println("Deck initialized. Here's the deck:")
+	fmt.Println("Board initialized. Here's the board:")
 	fmt.Println(d)
 
 	fmt.Println("Initializing players.")
@@ -33,14 +33,14 @@ func main() {
 		curPlayer.Choice(&d)
 		fmt.Println(d)
 
-		result := deck.AnalyzeDeck(&d, curPlayer.GetMark())
+		result := board.AnalyzeBoard(&d, curPlayer.GetMark())
 
-		if result == deck.WIN {
+		if result == board.WIN {
 			fmt.Println(curPlayer, "won!")
 			break
 		}
 
-		if result == deck.DRAW {
+		if result == board.DRAW {
 			fmt.Println("Draw!")
 			break
 		}

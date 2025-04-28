@@ -1,4 +1,4 @@
-package deck
+package board
 
 const (
 	CONTINUE_GAME = iota
@@ -8,7 +8,7 @@ const (
 
 type ObserverResult int
 
-func AnalyzeDeck(d *Deck, mark int) ObserverResult {
+func AnalyzeBoard(d *Board, mark int) ObserverResult {
 
 	cells := d.CellsFilledWith(mark)
 
@@ -72,7 +72,7 @@ func findWinColumn(c []Cell) bool {
 	return false
 }
 
-func findWinDiagonal(d *Deck, mark int) bool {
+func findWinDiagonal(d *Board, mark int) bool {
 	var foundDiagonal bool
 	for _, diag := range d.Diagonals() {
 		for _, cell := range diag {

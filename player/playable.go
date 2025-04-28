@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"tictactoe/deck"
+	"tictactoe/board"
 )
 
 type RealPlayer struct {
@@ -16,13 +16,13 @@ type RealPlayer struct {
 
 func NewPlayablePlayer(input *bufio.Reader, exitCh chan bool) *RealPlayer {
 	return &RealPlayer{
-		mark:   deck.X,
+		mark:   board.X,
 		input:  input,
 		exitCh: exitCh,
 	}
 }
 
-func (p *RealPlayer) Choice(d *deck.Deck) {
+func (p *RealPlayer) Choice(d *board.Board) {
 	fmt.Println("Please enter a command. Available commands: set, quit")
 	input := readInput(p.input)
 	command := getCommand(input)
@@ -47,7 +47,7 @@ func (p *RealPlayer) String() string {
 	return fmt.Sprint("You")
 }
 
-func (p *RealPlayer) setValue(ir *bufio.Reader, d *deck.Deck) error {
+func (p *RealPlayer) setValue(ir *bufio.Reader, d *board.Board) error {
 	fmt.Println("Select a row (from 1 to 3)")
 	rStr := readInput(ir)
 	if row, err := strconv.Atoi(rStr); err == nil {
